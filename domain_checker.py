@@ -13,6 +13,20 @@ import os
 from datetime import datetime
 
 
+def check_whois_installed():
+    """检查whois命令是否已安装"""
+    try:
+        subprocess.run(['which', 'whois'], check=True, capture_output=True)
+        return True
+    except subprocess.CalledProcessError:
+        print("错误: 未找到whois命令")
+        print("\n请安装whois:")
+        print("Ubuntu/Debian: sudo apt-get install whois")
+        print("CentOS/RHEL:   sudo yum install whois")
+        print("Alpine:        apk add whois")
+        return False
+
+
 class DomainChecker:
     def __init__(self, tld: str = "xyz", sleep_time: float = 1.0, num_threads: int = 4):
         """
@@ -24,7 +38,7 @@ class DomainChecker:
             num_threads: Number of worker threads to use
         """
         
-        if num_threads> 10:
+        if num_threads > 10:
             num_threads = 10
         self.tld = tld.strip('.')
         self.sleep_time = sleep_time
@@ -206,6 +220,10 @@ def main():
                        help='Number of worker threads (default: 4)')
 
     args = parser.parse_args()
+
+    # 检查whois命令是否已安装
+    if not check_whois_installed():
+        exit(1)
 
     checker = DomainChecker(
         tld=args.tld,

@@ -30,7 +30,7 @@ if __name__ == "__main__":
     
     # 示例：筛选5-7之间的域名
     start = '0'
-    end = '4'
+    end = '3'
     domains = filter_domains(input_file, start, end)
     
     print(f"Domains with all characters between {start} and {end}:")
