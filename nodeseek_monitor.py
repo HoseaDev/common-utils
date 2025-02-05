@@ -109,7 +109,7 @@ class NodeseekMonitor:
         except Exception as e:
             error_message = f"监控过程中出现错误: {str(e)}"
             self.logger.error(error_message, exc_info=True)
-            sc_send("Nodeseek监控错误", error_message)
+            # sc_send("Nodeseek监控错误", error_message)
 
     def start(self):
         """启动监控"""

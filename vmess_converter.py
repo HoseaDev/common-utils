@@ -24,19 +24,8 @@ def encode_vmess_url(config):
 
 def display_config(config):
     """显示配置的详细信息"""
-    print("\n当前节点配置:")
-    print("=" * 40)
-    print(f"别名: {config.get('ps', '')}")
-    print(f"地址: {config.get('add', '')}")
-    print(f"端口: {config.get('port', '')}")
-    print(f"用户ID: {config.get('id', '')}")
-    print(f"额外ID: {config.get('aid', 0)}")
-    print(f"传输协议: {config.get('net', '')}")
-    print(f"伪装类型: {config.get('type', '')}")
-    print(f"伪装域名: {config.get('host', '')}")
-    print(f"路径: {config.get('path', '')}")
-    print(f"TLS: {config.get('tls', '')}")
-    print("=" * 40)
+    # 输出config 所有字段
+    print(f"{json.dumps(config, indent=4)}")
 
 def main():
     if len(sys.argv) != 2:
@@ -54,12 +43,20 @@ def main():
         print("\n请输入新的配置 (直接回车保持原值):")
         new_ip = input(f"新IP地址 [{config['add']}]: ").strip()
         new_port = input(f"新端口 [{config['port']}]: ").strip()
+        new_tls = input(f"TLS设置 (true/tls/false/none) [{config.get('tls', 'none')}]: ").strip().lower()
         
         # 更新配置
         if new_ip:
             config['add'] = new_ip
         if new_port:
             config['port'] = int(new_port)
+        if new_tls:
+            if new_tls in ['true', 'tls']:
+                config['tls'] = 'tls'
+            elif new_tls in ['false', 'none']:
+                config['tls'] = 'none'
+            else:
+                print(f"警告: 无效的TLS设置 '{new_tls}'，将保持原值")
         
         # 显示更新后的配置
         print("\n更新后的配置:")
